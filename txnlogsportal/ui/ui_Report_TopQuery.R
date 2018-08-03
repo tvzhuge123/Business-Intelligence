@@ -1,0 +1,82 @@
+tabPanel('Top Query',
+  pageWithSidebar(
+    headerPanel("Top Query Report"),
+    sidebarPanel(
+     shinyjs::useShinyjs(),
+     #selectizeInput('dataCenter', 'Data center', choices = c("Choose one" = "", 'Level 3', 'Sungard')),
+     #selectizeInput('topquery_dataCenter', 'Data center', choices = c('Level 3'='L3', 'Sungard'='SG')),
+     dateRangeInput("topquery_dateRange", label = "Date range", min = "2016-10-01", max = toString(Sys.Date()-1), start = toString(Sys.Date()-1), end = toString(Sys.Date()-1)),
+     checkboxInput("topquery_excludeWeekend", label = "Exclude weekends data", value = FALSE),
+     checkboxInput("topquery_truncated", label = "Truncated query without column names", value = FALSE),
+     selectizeInput('topquery_durationFilter', 'Duration filter', choices = c(0, 100, 1000)),
+     selectizeInput('topquery_rankMode', 'Rank mode', choices = c('Frequency * MeanDuration (MAS)'='MAS', 'Frequency (CNT)'='CNT')),
+     sliderInput("topquery_rankRange", "Rank range", min = 1, max = 200, value = c(1,20)),
+     
+     hr(),
+     div(style="display:inline-block;", actionButton("topquery_run", "Run Analysis", style="color: #fff; background-color: #337ab7; margin-right: 15px;")),
+     div(style="display:inline-block;", actionButton("topquery_stop", "Stop App", style="color: #fff; background-color: #DB2929;")),
+     
+     hr(),
+     div(style="display:inline-block; margin-left:0px", downloadButton('topquery_downloadData', 'Download Report')),
+     
+     br(),
+     tags$small(paste0(
+       "Note: Run analysis before downloading report."
+     )),
+      width = input_width
+    ),
+    mainPanel(
+      tags$head(tags$style("#table_topquery_loverall  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_soverall  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat1  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat2  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat3  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat4  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat5  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat6  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat7  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat8  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat9  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_lintercat10  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat1  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat2  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat3  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat4  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat5  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat6  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat7  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat8  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat9  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_sintercat10  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_pgsintercat1  {white-space: nowrap;}")),
+      tags$head(tags$style("#table_topquery_pgsalesdb  {white-space: nowrap;}")),
+     tabsetPanel(
+       tabPanel('L3 All DBs', DT::dataTableOutput('table_topquery_loverall')),
+       tabPanel('SG All DBs', DT::dataTableOutput('table_topquery_soverall')),
+       tabPanel('LInterCAT1', DT::dataTableOutput("table_topquery_lintercat1")),
+       tabPanel('LInterCAT2', DT::dataTableOutput("table_topquery_lintercat2")),
+       tabPanel('LInterCAT3', DT::dataTableOutput("table_topquery_lintercat3")),
+       tabPanel('LInterCAT4', DT::dataTableOutput("table_topquery_lintercat4")),
+       tabPanel('LInterCAT5', DT::dataTableOutput("table_topquery_lintercat5")),
+       tabPanel('LInterCAT6', DT::dataTableOutput("table_topquery_lintercat6")),
+       tabPanel('LInterCAT7', DT::dataTableOutput("table_topquery_lintercat7")),
+       tabPanel('LInterCAT8', DT::dataTableOutput("table_topquery_lintercat8")),
+       tabPanel('LInterCAT9', DT::dataTableOutput("table_topquery_lintercat9")),
+       tabPanel('LInterCAT10', DT::dataTableOutput("table_topquery_lintercat10")),
+       tabPanel('SInterCAT1', DT::dataTableOutput("table_topquery_sintercat1")),
+       tabPanel('SInterCAT2', DT::dataTableOutput("table_topquery_sintercat2")),
+       tabPanel('SInterCAT3', DT::dataTableOutput("table_topquery_sintercat3")),
+       tabPanel('SInterCAT4', DT::dataTableOutput("table_topquery_sintercat4")),
+       tabPanel('SInterCAT5', DT::dataTableOutput("table_topquery_sintercat5")),
+       tabPanel('SInterCAT6', DT::dataTableOutput("table_topquery_sintercat6")),
+       tabPanel('SInterCAT7', DT::dataTableOutput("table_topquery_sintercat7")),
+       tabPanel('SInterCAT8', DT::dataTableOutput("table_topquery_sintercat8")),
+       tabPanel('SInterCAT9', DT::dataTableOutput("table_topquery_sintercat9")),
+       tabPanel('SInterCAT10', DT::dataTableOutput("table_topquery_sintercat10")),
+       tabPanel('PGSInterCAT1', DT::dataTableOutput("table_topquery_pgsintercat1")),
+       tabPanel('PGSalesDB', DT::dataTableOutput("table_topquery_pgsalesdb")),
+       tabPanel('SupportDB', DT::dataTableOutput("table_topquery_supportdb"))
+     )
+    )
+    )
+)

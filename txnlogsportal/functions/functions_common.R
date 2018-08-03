@@ -99,7 +99,7 @@ loadDataSQLServer = function(query)
 {
   mydsn = "dbserverdsn"
   channel = tryCatch({
-    odbcConnect(mydsn, "mu", "SqLuSeR")
+    odbcConnect(mydsn, "", "")
   }, warning = function(e) {
     -9999
   })
